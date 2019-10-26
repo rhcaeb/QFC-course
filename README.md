@@ -1,4 +1,4 @@
-![QFC Logo]()
+![QFC Logo](https://github.com/rhcaeb/QFC-course/blob/master/_misc/MSU-QFC.PNG)
 
 # Programming Fundamentals Using R
 
