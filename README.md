@@ -6,7 +6,7 @@ Instructure: Charlie Belinsky
 
 - **Basic Programming**
 
-  - 1-1 RStudio Projects
+  - [1-1 RStudio Projects](https://github.com/rhcaeb/QFC-course/blob/master/_lessons/01-01_%20R%20Installation%20and%20Setup.pdf)
   - 1-2 Variables
   - 1-3 Mathematical Operations
   - 1-4 Debugging
