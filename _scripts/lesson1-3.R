@@ -114,7 +114,7 @@
 {
   
   rm(list=ls()); # clean out the environment
-  options(show.error.locations = T); # give line numbers on errors
+  options(show.error.locations = TRUE); # give line numbers on errors
   
   # Individual Fish Length (cm) Values:
   
@@ -130,7 +130,8 @@
   
   # Calculate Variance
   
-  varLength <- ((fish1 - mnLength)^2 + (fish2 - mnLength)^2 + (fish3 - mnLength)^2 + (fish4 - mnLength)^2 + (fish5 - mnLength)^2) / 5; # variance
+  varLength <- ((fish1 - mnLength)^2 + (fish2 - mnLength)^2 + (fish3 - mnLength)^2 + 
+                (fish4 - mnLength)^2 + (fish5 - mnLength)^2) / 5; # variance
   
   # Calculate Standard Deviation
   
