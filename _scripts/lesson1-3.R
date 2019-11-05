@@ -109,4 +109,34 @@
     
 }
 
+# APPLICATION ---
 
+{
+  
+  rm(list=ls()); # clean out the environment
+  options(show.error.locations = TRUE); # give line numbers on errors
+  
+  # Individual Fish Length (cm) Values:
+  
+  fish1 <- 25;
+  fish2 <- 26;
+  fish3 <- 20;
+  fish4 <- 22;
+  fish5 <- 32;
+  
+  # Calculate Mean (n = 5)
+  
+  mnLength <- (fish1 + fish2 + fish3 + fish4 + fish5) / 5; # mean length
+  
+  # Calculate Variance
+  
+  varLength <- ((fish1 - mnLength)^2 + (fish2 - mnLength)^2 + (fish3 - mnLength)^2 + 
+                (fish4 - mnLength)^2 + (fish5 - mnLength)^2) / 5; # variance
+  
+  # Calculate Standard Deviation
+  
+  sdLength <- sqrt(varLength) # standard deviation, OR simply, square root of the variance
+  
+  # OR varLength^(1/2) works too
+  
+}
