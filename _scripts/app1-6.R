@@ -23,6 +23,6 @@
   
   cat("The temperature measurements are from: ", tempLoc,
       "\nThe recorded temperatures were: ", temp1, temp2, temp3, temp4, temp5,
-      "\nThe average temperature was: ", mnTemp)
+      "\nThe average temperature was: ", mnTemp);
 
 }
