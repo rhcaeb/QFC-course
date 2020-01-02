@@ -22,6 +22,10 @@
   {
     cat("Category II\n");
   }
+   else if(fishLoc != "north" && fishLoc != "south")
+  {
+    cat("Invalid port location! Please check spelling.");
+  }
   else if(fishAge > 5) # age > 5 && port == "north" || "south"
   {
     cat("Category III\n");
@@ -30,9 +34,5 @@
   {
     cat("Category IV\n");
   }
-  else if(fishLoc != "north" && fishLoc != "south")
-  {
-    cat("Invalid port location! Please check spelling.");
-  }
-  
+    
 }
