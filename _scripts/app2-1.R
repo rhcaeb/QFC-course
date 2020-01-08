@@ -14,5 +14,7 @@
   
   newWeatherData <- read.csv("_data/LansingWeather.csv")
   
+  # Part C ----
+  View(newWeatherData) # str(newWeatherData)
   
 }
