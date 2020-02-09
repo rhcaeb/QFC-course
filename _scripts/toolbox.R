@@ -34,3 +34,9 @@ counter <- function(vector, compareVal, conditionalOp=">"){
   return(countVal); # return the count value to the caller
   
 }
+
+# NOAA/NCDC Climate Database Token
+
+myToken <- "ghXpFQgDaxkVlCyYmzLuzUXIfuWuAXyz" 
+
+
