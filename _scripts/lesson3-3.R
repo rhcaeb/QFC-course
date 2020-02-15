@@ -103,6 +103,31 @@
   
   lansWeatherMat <- signif(x = lansWeatherMat, digits = 2);
   
+  ## 9.0 - Performaing a mean down each column
+  
+  yearlyMean = c();
+  
+  for(i in 1:6) 
+  {
+    # get the mean of all values in column i and save it to monthlyMean[i]
+    yearlyMean[i] = mean(lansWeatherMat[,i]);
+  }
+  
+  ## 9.2 - Performing a mean across all rows (days)
+  
+  dailyMean = c();
+  
+  for(i in 1:31) 
+  {
+    # get the mean of all values in row i and save it to dailyMean[i]
+    dailyMean[i] = mean(lansWeatherMat[i,]);
+  
+  }
+  
+  ## 10.0 - Saving the Matrix
+  
+  write.csv(x = lansWeatherMat, file = "_data/LansingWeatherJanTemps.csv", row.names = FALSE);
+  
 }
 
 
