@@ -40,3 +40,39 @@ counter <- function(vector, compareVal, conditionalOp=">"){
 myToken <- "ghXpFQgDaxkVlCyYmzLuzUXIfuWuAXyz" 
 
 
+# Time Conversion (Lesson 3-6)
+
+
+timeConvert <- function(hoursMinutes)
+{
+  
+  returnVector <- c();
+  
+  for(i in 1:length(hoursMinutes))
+  {
+    
+    numDigits <- nchar(as.character(hoursMinutes[i]));
+    minutes <- substr(hoursMinutes[i], numDigits-1, numDigits);
+    minutes <- as.numeric(minutes)*(1/60);
+    hours <- floor(hoursMinutes[i]/100);
+    returnVector[i] <- round(hours+minutes, 2);
+    
+  }
+  
+  return(returnVector);
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
