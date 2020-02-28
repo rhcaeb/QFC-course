@@ -33,12 +33,10 @@
       condition = 'K'
     );
   
-  
+  # Walleye Data
+  walleyeData <- lakeWinnipeg %>%
+    filter(Species == "Walleye" & # walleye only
+             Count == "1"); # individual fish data only
   
 
-  
-  
-  
-
-  
 }
