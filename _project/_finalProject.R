@@ -25,15 +25,15 @@
                              sheet = "2009_2018 LK WPG INDEX");
   
   # Wrangle dB
-  lakeWinnipeg <- lakeWinnipeg %>% # dplyr() function
+  lakeWinnipeg <- lakeWinnipeg %>% # dplyr() function # SKILL 40
     select("Year", "ID", "Site", "Set", "Mesh Size", "Fish #", "Species",
            "Count", "Weight", "Length", "Mat.", "Sex", "Age",
            "Remarks", "K") %>%
-    rename(
+    rename( # SKILL 45
       meshsize = 'Mesh Size',
       fishnumber = 'Fish #',
       maturity = 'Mat.',
-      condition = 'K'
+      condition = 'K' # index of health based on obs. to expected weight.
     );
   
   # Walleye Data
@@ -41,7 +41,31 @@
     filter(Species == "Walleye" & # walleye only
              Count == "1"); # individual fish data only
   
-  # length-weight outlier check
+  # length-weight regression / outlier check by 'Year'
+  ggplot(data = walleyeData, mapping = aes(x = Length, y = Weight)) +
+    geom_point(size = 2.0, shape = 21) +
+    geom_smooth(method = 'lm', colour = 'red', size = 1) + # regression line
+    facet_wrap(~ Year, ncol = 4) +
+    ggtitle('Walleye - Observed length at weight by sample year') +
+    ylab('Weight (g)') +
+    xlab('\nTotal Length (mm)') +
+    theme_bw();
+  
+  # length/weight summary statistics by 'Year'
+  walleyeSummary <- walleyeData %>%
+    group_by(Species, Year) %>%
+    summarise( # SKILL 25 & 41 & 44
+      nfish = n(), # number of fish observed in sample year
+      mean_length = round(mean(Length, na.rm = TRUE), 2), # mean length
+      sd_length = round(sd(Length, na.rm = TRUE), 2), # std deviation length
+      se_length = round(sd_length/sqrt(nfish), 2), # std error length
+      mean_weight = round(mean(Weight, na.rm = TRUE), 2), # mean weight
+      sd_weight = round(sd(Weight, na.rm = TRUE), 2), # std deviation weight
+      se_weight = round(sd_weight/sqrt(nfish), 2) # std error weight
+    ) %>%
+    ungroup();
+  
+  
   
   
   
