@@ -6,10 +6,13 @@
   rm(list=ls()); # clear/remove objects from the environment
   options(show.error.locations = TRUE); # debugging / line error(s)
   
+  set.seed(54761); # random number generation
+  
   # Libraries ----
   
   # install.packages('tidyverse'); 
   library(tidyverse); # suite of data science packages
+  library(readxl);
   
   # Load Data ----
   
@@ -37,6 +40,15 @@
   walleyeData <- lakeWinnipeg %>%
     filter(Species == "Walleye" & # walleye only
              Count == "1"); # individual fish data only
+  
+  # length-weight outlier check
+  
+  
+  
+  
+  
+  
+  
   
 
 }
