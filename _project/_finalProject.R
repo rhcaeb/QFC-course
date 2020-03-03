@@ -13,6 +13,8 @@
   # install.packages('tidyverse'); 
   library(tidyverse); # suite of data science packages
   library(readxl);
+  # install.packages('nls.multstart');
+  library(nls.multstart); # non-linear regression (von Bertalannfy growth)
   
   # Load Data ----
   
@@ -65,14 +67,38 @@
     ) %>%
     ungroup();
   
+  # von Bertalannfy (vB) growth ----
   
+  # define vB model
+  vBmodel <- function(t, Linf, K = NULL, t0 = NULL){ # t = observed age
+    if(length(Linf) == 3){
+      K <- Linf[[2]]
+      t0 <- Linf[[3]]
+      Linf <- Linf[[1]]
+    }
+    Linf * (1 - exp(-K * (t - t0)));
+  }
   
+  # remove individual
   
-  
-  
-  
-  
+  # find minimum/maximum length in each year for non-linear regression model
+  # in order to prevent over estimating asymptotic length (Linf)
   
   
 
-}
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}      
+  
+  
+  
+  
+  
