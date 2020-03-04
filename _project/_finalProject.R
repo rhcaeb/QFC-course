@@ -12,9 +12,12 @@
   
   # install.packages('tidyverse'); 
   library(tidyverse); # suite of data science packages
+  # install.packages('readxl');
   library(readxl);
   # install.packages('nls.multstart');
   library(nls.multstart); # non-linear regression (von Bertalannfy growth)
+  # install.packages('broom')
+  library(broom); # clear/summarise model outputs (e.g., nls)
   
   # Load Data ----
   
@@ -76,13 +79,56 @@
       t0 <- Linf[[3]]
       Linf <- Linf[[1]]
     }
-    Linf * (1 - exp(-K * (t - t0)));
+    Linf * (1 - exp(-K * (t - t0))); # von Bertalannfy growth equation
   }
   
   # remove individual
   
   # find minimum/maximum length in each year for non-linear regression model
-  # in order to prevent over estimating asymptotic length (Linf)
+  walleyeLinf <- walleyeData %>%
+    group_by(Species, Year) %>%
+    summarise(
+      nfish = n(),
+      maxlength = max(Length, na.rm = TRUE)
+    ) %>%
+    ungroup();
+  
+  Linf.min <- min(walleyeLinf$maxlength); # min. observed length
+  Linf.max <- max(walleyeLinf$maxlength); # max. observed length
+  
+  # apply 'vBmodel' and iterate with 'nls_multstart'
+  # to fit predicted length at age
+  fitvBmodel <- walleyeData %>%
+    group_by(Species, Year) %>%
+    nest() %>%
+    mutate(vBmodel = purrr::map(data,
+                                ~nls_multstart(Length ~ vBmodel(
+                                  t = Age, Linf, K, t0 = -1),
+                                  data = .x,
+                                  iter = 1000,
+                                  start_lower = c(Linf = Linf.min, K = 0.1),
+                                  start_upper = c(Linf = Linf.max, K = 0.5),
+                                  supp_errors = 'Y',
+                                  na.action = na.omit))) %>%
+    arrange(Year)
+                                
+  
+  # check model convergence
+  modelConverge <- fitvBmodel %>%
+    unnest(vBmodel %>% map(glance), .drop = TRUE);
+  
+  # list data by 'Year' with tidy()
+  convergeNo <- subset(modelConverge, isConv == FALSE)$Year
+  
+  # tidy/list 'fitvBmodel' outputs/parameters
+  modelParams <- fitvBmodel %>%
+    filter(!Year %in% convergeNo) %>%
+    unnest(vBmodel %>% map(tidy))
+  
+  # Save model outputs/parameters
+  # saveRDS
+  
+
   
   
 
