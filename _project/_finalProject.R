@@ -43,11 +43,12 @@
   
   # Walleye Data
   walleyeData <- lakeWinnipeg %>%
-    filter(Species == "Walleye" & # walleye only
+    filter(Species == "Walleye" &   # walleye only
              Count == "1"); # individual fish data only
   
   # length-weight regression / outlier check by 'Year'
-  ggplot(data = walleyeData, mapping = aes(x = Length, y = Weight)) +
+  lenwtReg <- ggplot(data = walleyeData, 
+                     mapping = aes(x = Length, y = Weight)) +
     geom_point(size = 2.0, shape = 21) +
     geom_smooth(method = 'lm', colour = 'red', size = 1) + # regression line
     facet_wrap(~ Year, ncol = 4) +
@@ -55,6 +56,7 @@
     ylab('Weight (g)') +
     xlab('\nTotal Length (mm)') +
     theme_bw();
+  plot(lenwtReg);
   
   # length/weight summary statistics by 'Year'
   walleyeSummary <- walleyeData %>%
@@ -70,10 +72,81 @@
     ) %>%
     ungroup();
   
+  # Cohort Analysis ----
+  # Create new variable that doesn't include missing ages
+  ageData <- walleyeData %>%
+    filter(!is.na(Age)) # remove ages == 'NA'
+  
+  walleyeCohort <- ageData %>%
+    group_by(Year, Species) %>%
+    summarise(
+      ncohort = n_distinct(Age), # distinct age cohorts
+      nfish = n() # number of observations
+    )
+  
+  # Variable to plot geom_vline()
+  vline <- ageData %>%  
+    group_by(Year) %>%
+    summarise(
+      line = mean(Age, na.rm = TRUE) # mean age for each 'Year'
+    ) %>%
+    ungroup();
+  
+  # Age distribution by 'Year'
+  agePlot <- ggplot(data = ageData, mapping = aes(x = as.factor(Age))) +
+              geom_histogram(color = 'black', fill = 'darksalmon',
+                             stat = 'count', binwidth = 1) +
+              facet_wrap(~ Year, ncol = 4, scales = "free_x") +
+              geom_vline(data = vline, 
+                         aes(xintercept = line, linetype = 'Mean Age')) +
+              ylab('Count\n') +
+              xlab('\nAge (years)') +
+              scale_linetype_manual(values = 2,
+                          guide = guide_legend(title = 'Reference Line', 
+                                               title.position = 'top', 
+                          title.theme = element_text(size = 10, 
+                                                     angle = 0, 
+                                                     face = "bold"))) +
+              theme_bw() +
+              theme(legend.position = 'top',
+                    legend.justification = 'right'); 
+  plot(agePlot);
+  
+  # Age distribution by 'Sex' and 'Year'
+  colorFill <- c('#1b9e77', '#d95f02', '#7570b3'); # hex (female, male, NA);
+  
+  agesexPlot <- ggplot(data = ageData,
+                       mapping = aes(x = as.factor(Age), fill = Sex)) +
+    geom_bar(color = 'black', stat = 'count') +
+    facet_wrap(~ Year, ncol = 4, scales = "free_x") +
+    ylab('Count\n') +
+    xlab('\nAge (years)') +
+    scale_fill_manual(values = colorFill, 
+                      guide = guide_legend(title = 'Sex', 
+                                title.position = 'top', 
+                                title.theme = element_text(size = 10, 
+                                                           angle = 0,
+                                                           face = "bold"))) +
+    theme_bw() +
+    theme(legend.position = 'top',
+          legend.justification = 'right')
+  plot(agesexPlot);
+  
+} # end;
+
+
+
+
+
+  
+#######################################################################
+  
+  #### BELOW NEEDS TO BE FIXED ####
+  
   # von Bertalannfy (vB) growth ----
   
   # define vB model
-  vBmodel <- function(t, Linf, K = NULL, t0 = NULL){ # t = observed age
+  vBmodel <- function(t, Linf, K = NULL, t0 = -1){ # t = observed age
     if(length(Linf) == 3){
       K <- Linf[[2]]
       t0 <- Linf[[3]]
@@ -88,7 +161,7 @@
   walleyeLinf <- walleyeData %>%
     group_by(Species, Year) %>%
     summarise(
-      nfish = n(),
+      nfish = n(), # n observations
       maxlength = max(Length, na.rm = TRUE)
     ) %>%
     ungroup();
@@ -99,23 +172,28 @@
   # apply 'vBmodel' and iterate with 'nls_multstart'
   # to fit predicted length at age
   fitvBmodel <- walleyeData %>%
-    group_by(Species, Year) %>%
+    group_by(Year) %>%
     nest() %>%
-    mutate(vBmodel = purrr::map(data,
-                                ~nls_multstart(Length ~ vBmodel(
-                                  t = Age, Linf, K, t0 = -1),
-                                  data = .x,
-                                  iter = 1000,
-                                  start_lower = c(Linf = Linf.min, K = 0.1),
-                                  start_upper = c(Linf = Linf.max, K = 0.5),
-                                  supp_errors = 'Y',
-                                  na.action = na.omit))) %>%
+    mutate(vBfit = purrr::map(data,
+                              ~nls_multstart(Length ~ vBmodel(
+                                t = Age, Linf, K, t0 = -1),
+                                data = .x,
+                                iter = 1000,
+                                start_lower = c(Linf = Linf.min, K = 0.1),
+                                start_upper = c(Linf = Linf.max, K = 0.5),
+                                supp_errors = 'Y',
+                                na.action = na.omit))) %>%
     arrange(Year)
-                                
+  
+  # unnest() and tidy von Bertalannfy growth parameters
+  vBparams <- fitvBmodel %>%
+    unnest(vBfit %>% map(tidy)) %>%
+    mutate_if(is.numeric, funs(round(., 2)))
   
   # check model convergence
   modelConverge <- fitvBmodel %>%
-    unnest(vBmodel %>% map(glance), .drop = TRUE);
+    unnest(fitmodel %>% map(glance), .drop = TRUE) %>%
+    arrange(Year);
   
   # list data by 'Year' with tidy()
   convergeNo <- subset(modelConverge, isConv == FALSE)$Year
@@ -128,21 +206,10 @@
   # Save model outputs/parameters
   # saveRDS
   
-
+  #### ABOVE NEEDS TO BE FIXED ####
   
   
 
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-}      
   
   
   
