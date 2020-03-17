@@ -53,7 +53,7 @@
     geom_smooth(method = 'lm', colour = 'red', size = 1) + # regression line
     facet_wrap(~ Year, ncol = 4) +
     ggtitle('Walleye - Observed length at weight by sample year') +
-    ylab('Weight (g)') +
+    ylab('Weight (g)\n') +
     xlab('\nTotal Length (mm)') +
     theme_bw();
   plot(lenwtReg);
@@ -99,6 +99,7 @@
               facet_wrap(~ Year, ncol = 4, scales = "free_x") +
               geom_vline(data = vline, 
                          aes(xintercept = line, linetype = 'Mean Age')) +
+              ggtitle('Walleye - Age distribution by sample year') +
               ylab('Count\n') +
               xlab('\nAge (years)') +
               scale_linetype_manual(values = 2,
@@ -119,6 +120,7 @@
                        mapping = aes(x = as.factor(Age), fill = Sex)) +
     geom_bar(color = 'black', stat = 'count') +
     facet_wrap(~ Year, ncol = 4, scales = "free_x") +
+    ggtitle('Walleye - Age distribution by sex and sample year') +
     ylab('Count\n') +
     xlab('\nAge (years)') +
     scale_fill_manual(values = colorFill, 
