@@ -29,6 +29,8 @@
   lakeWinnipeg <- read_excel("_project/lakeWinnipeg.xlsx",
                              sheet = "2009_2018 LK WPG INDEX");
   
+  # Clean Data ----
+  
   # Wrangle dB
   lakeWinnipeg <- lakeWinnipeg %>% # dplyr() function # SKILL 40
     select("Year", "ID", "Site", "Set", "Mesh Size", "Fish #", "Species",
@@ -45,6 +47,8 @@
   walleyeData <- lakeWinnipeg %>%
     filter(Species == "Walleye" &   # walleye only
              Count == "1"); # individual fish data only
+  
+  # Length/Weight Analysis ----
   
   # length-weight regression / outlier check by 'Year'
   lenwtReg <- ggplot(data = walleyeData, 
@@ -72,10 +76,25 @@
     ) %>%
     ungroup();
   
+  # Analysis of Variance 
+  # Length ~ Year
+  lenANOVA <- aov(formula = Length ~ Year, data = walleyeData);
+  print(summary(lenANOVA));
+  
+  # ANOVA Results ...... lip sum
+  
+  # Weight ~ Year
+  wtANOVA <- aov(formula = Weight ~ Year, data = walleyeData);
+  print(summary(wtANOVA));
+  
+  # ANOVA Results ...... lip sum
+  
+  
+  
   # Cohort Analysis ----
-  # Create new variable that doesn't include missing ages
+  # Create new variable that doesn't include missing sex/ages
   ageData <- walleyeData %>%
-    filter(!is.na(Age)) # remove ages == 'NA'
+    filter(!is.na(Sex) & !is.na(Age)) # remove sex/ages == 'NA'
   
   walleyeCohort <- ageData %>%
     group_by(Year, Species) %>%
@@ -111,7 +130,7 @@
               theme_bw() +
               theme(legend.position = 'top',
                     legend.justification = 'right'); 
-  plot(agePlot);
+  plot(agePlot);     
   
   # Age distribution by 'Sex' and 'Year'
   colorFill <- c('#1b9e77', '#d95f02', '#7570b3'); # hex (female, male, NA);
@@ -134,8 +153,66 @@
           legend.justification = 'right')
   plot(agesexPlot);
   
+  # Age distribution (boxplot) by 'Sex' and 'Year'
+  ageBoxPlot <- ggplot(data = ageData,
+                       mapping = aes(x = as.factor(Sex),
+                                     y = Age)) +
+    geom_boxplot(aes(fill = as.factor(Sex))) +
+    stat_summary(fun.y = mean, geom = 'point', shape = 21, fill = 'white') +
+    facet_wrap(~ Year, ncol = 4) +
+    ggtitle('Walleye - Age distribution by sex and sample year') +
+    ylab('Age (years)\n') +
+    xlab('') +
+    scale_fill_manual(values = colorFill, 
+                      guide = guide_legend(title = 'Sex', 
+                                title.position = 'top', 
+                                title.theme = element_text(size = 10, 
+                                                           angle = 0,
+                                                           face = "bold"))) +
+    theme_bw() +
+    theme(legend.position = 'top',
+          legend.justification = 'right',
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank())
+  plot(ageBoxPlot);
+  
+  # Condition Analysis ----
+  # 2018: Linear regression (Condition ~ Length)
+  
+  cond2018 <- filter(walleyeData, Year == 2018) # filter 'Year' == '2018'
+  
+  modelKlen <- ggplot(cond2018,
+                      mapping = aes(x = Length, y = condition)) +
+    geom_point(size = 2, shape = 21) +
+    geom_smooth(method = 'lm', colour = 'red', size = 1) +
+    ggtitle('Walleye - Condition vs Length (2018)') +
+    ylab('Condition (K)\n') +
+    xlab('\nTotal Length (mm)') +
+    theme_bw()
+  plot(modelKlen); # plot
+  
+  modelKlenSummary <- lm(formula = condition ~ Length, data = cond2018);
+  print(summary(modelKlenSummary)); # Summary of linear regression
+  
+  # 2018: Linear regression (Condition ~ Weight)
+  
+  modelKwt <- ggplot(cond2018,
+                     mapping = aes(x = Weight, y = condition)) +
+    geom_point(size = 2, shape = 21) +
+    geom_smooth(method = 'lm', colour = 'red', size = 1) +
+    ggtitle('Walleye - Condition vs Weight (2018)') +
+    ylab('Condition (K)\n') +
+    xlab('\nWeight (g)') +
+    theme_bw() 
+  plot(modelKwt); # plot
+    
+  modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018);
+  print(summary(modelKwtSummary)); # Summary of linear regression
+  
+  
+  
+  
 } # end;
-
 
 
 
