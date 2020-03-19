@@ -26,13 +26,13 @@
   # download:'Lake Winnipeg Index Gillnetting 2009-2018' .xlsx file
   
   # Lake Winnipeg Fisheries Data - Gillnetting 2009-2018
-  lakeWinnipeg <- read_excel("_project/lakeWinnipeg.xlsx",
-                             sheet = "2009_2018 LK WPG INDEX");
+  lakeWinnipegRAW <- read_excel("_project/lakeWinnipeg.xlsx", # Raw dataframe
+                             sheet = "2009_2018 LK WPG INDEX"); 
   
   # Clean Data ----
   
   # Wrangle dB
-  lakeWinnipeg <- lakeWinnipeg %>% # dplyr() function # SKILL 40
+  lakeWinnipeg <- lakeWinnipegRAW %>% # dplyr() function # SKILL 40
     select("Year", "ID", "Site", "Set", "Mesh Size", "Fish #", "Species",
            "Count", "Weight", "Length", "Mat.", "Sex", "Age",
            "Remarks", "K") %>%
@@ -48,24 +48,29 @@
     filter(Species == "Walleye" &   # walleye only
              Count == "1"); # individual fish data only
   
+  # Save reformatted dataframe (Walleye Data) # SKILL 28
+  write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv');
+  
+  # Find min., max., and average value
+  
   # Length/Weight Analysis ----
   
   # length-weight regression / outlier check by 'Year'
   lenwtReg <- ggplot(data = walleyeData, 
                      mapping = aes(x = Length, y = Weight)) +
-    geom_point(size = 2.0, shape = 21) +
-    geom_smooth(method = 'lm', colour = 'red', size = 1) + # regression line
+    geom_point(size = 2.0, shape = 21) + # SKILL 32
+    geom_smooth(method = 'lm', colour = 'red', size = 1) + # SKILL 57
     facet_wrap(~ Year, ncol = 4) +
-    ggtitle('Walleye - Observed length at weight by sample year') +
-    ylab('Weight (g)\n') +
-    xlab('\nTotal Length (mm)') +
+    ggtitle('Walleye - Observed length at weight by sample year') + # SKILL 29
+    ylab('Weight (g)\n') + # SKILL 6, 29
+    xlab('\nTotal Length (mm)') + # SKILL 6, 29
     theme_bw();
   plot(lenwtReg);
   
   # length/weight summary statistics by 'Year'
   walleyeSummary <- walleyeData %>%
     group_by(Species, Year) %>%
-    summarise( # SKILL 25 & 41 & 44
+    summarise( # SKILL 25 & 41 & 44 
       nfish = n(), # number of fish observed in sample year
       mean_length = round(mean(Length, na.rm = TRUE), 2), # mean length
       sd_length = round(sd(Length, na.rm = TRUE), 2), # std deviation length
@@ -113,14 +118,14 @@
   
   # Age distribution by 'Year'
   agePlot <- ggplot(data = ageData, mapping = aes(x = as.factor(Age))) +
-              geom_histogram(color = 'black', fill = 'darksalmon',
+              geom_histogram(color = 'black', fill = 'darksalmon', # SKILL 31 & 33
                              stat = 'count', binwidth = 1) +
               facet_wrap(~ Year, ncol = 4, scales = "free_x") +
               geom_vline(data = vline, 
                          aes(xintercept = line, linetype = 'Mean Age')) +
               ggtitle('Walleye - Age distribution by sample year') +
-              ylab('Count\n') +
-              xlab('\nAge (years)') +
+              ylab('Count\n') + # SKILL 6
+              xlab('\nAge (years)') + # SKILL 6
               scale_linetype_manual(values = 2,
                           guide = guide_legend(title = 'Reference Line', 
                                                title.position = 'top', 
@@ -128,7 +133,7 @@
                                                      angle = 0, 
                                                      face = "bold"))) +
               theme_bw() +
-              theme(legend.position = 'top',
+              theme(legend.position = 'top', # SKILL 30
                     legend.justification = 'right'); 
   plot(agePlot);     
   
@@ -137,12 +142,12 @@
   
   agesexPlot <- ggplot(data = ageData,
                        mapping = aes(x = as.factor(Age), fill = Sex)) +
-    geom_bar(color = 'black', stat = 'count') +
+    geom_bar(color = 'black', stat = 'count') + # SKILL 34
     facet_wrap(~ Year, ncol = 4, scales = "free_x") +
     ggtitle('Walleye - Age distribution by sex and sample year') +
     ylab('Count\n') +
     xlab('\nAge (years)') +
-    scale_fill_manual(values = colorFill, 
+    scale_fill_manual(values = colorFill, # SKILL 30
                       guide = guide_legend(title = 'Sex', 
                                 title.position = 'top', 
                                 title.theme = element_text(size = 10, 
