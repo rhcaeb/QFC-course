@@ -51,8 +51,6 @@
   # Save reformatted dataframe (Walleye Data) # SKILL 28
   write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv');
   
-  # Find min., max., and average value
-  
   # Length/Weight Analysis ----
   
   # length-weight regression / outlier check by 'Year'
@@ -94,8 +92,6 @@
   
   # ANOVA Results ...... lip sum
   
-  
-  
   # Cohort Analysis ----
   # Create new variable that doesn't include missing sex/ages
   ageData <- walleyeData %>%
@@ -108,6 +104,13 @@
       nfish = n() # number of observations
     )
   
+  # Find (pooled) min., max., and average age (years)
+  
+  minAge <- NA;
+  maxAge <- NA;
+  avgAge <- NA;
+  
+  # Plot
   # Variable to plot geom_vline()
   vline <- ageData %>%  
     group_by(Year) %>%
@@ -216,86 +219,59 @@
   
   
   
+  # Growth Analysis ----
   
-} # end;
-
-
-
-
-  
-#######################################################################
-  
-  #### BELOW NEEDS TO BE FIXED ####
-  
-  # von Bertalannfy (vB) growth ----
-  
-  # define vB model
-  vBmodel <- function(t, Linf, K = NULL, t0 = -1){ # t = observed age
-    if(length(Linf) == 3){
-      K <- Linf[[2]]
-      t0 <- Linf[[3]]
-      Linf <- Linf[[1]]
+  # Define von Bertalannfy Growth Model
+  vBmodel <- function(t, Linf, K = NULL, t0 = -1)
+    
+  {
+    
+    if(length(Linf) == 3) {
+      
+      K <- Linf[[2]] # Brody Coefficient
+      t0 <- Linf[[3]] # time/age when the average length was zero
+      Linf <- Linf[[1]] # Asymptotic length
+      
     }
-    Linf * (1 - exp(-K * (t - t0))); # von Bertalannfy growth equation
+    
+    Linf * (1 - exp(-K * (t - t0)))
+    
   }
   
-  # remove individual
-  
-  # find minimum/maximum length in each year for non-linear regression model
-  walleyeLinf <- walleyeData %>%
-    group_by(Species, Year) %>%
+  # Find minimum/maximum 'Length' for nls_multstart()
+  Linf <- ageData %>%
+    group_by(Year, Species) %>%
     summarise(
-      nfish = n(), # n observations
-      maxlength = max(Length, na.rm = TRUE)
+      maxLen = max(Length, na.rm = TRUE)
     ) %>%
-    ungroup();
+    ungroup()
   
-  Linf.min <- min(walleyeLinf$maxlength); # min. observed length
-  Linf.max <- max(walleyeLinf$maxlength); # max. observed length
+  Linf.min <- min(Linf$maxLen);
+  Linf.max <- max(Linf$maxLen);
   
-  # apply 'vBmodel' and iterate with 'nls_multstart'
-  # to fit predicted length at age
-  fitvBmodel <- walleyeData %>%
-    group_by(Year) %>%
+  # Apply vB fit
+  vBfit <- ageData %>%
+    group_by(., Year) %>%
     nest() %>%
-    mutate(vBfit = purrr::map(data,
-                              ~nls_multstart(Length ~ vBmodel(
-                                t = Age, Linf, K, t0 = -1),
-                                data = .x,
-                                iter = 1000,
-                                start_lower = c(Linf = Linf.min, K = 0.1),
-                                start_upper = c(Linf = Linf.max, K = 0.5),
-                                supp_errors = 'Y',
-                                na.action = na.omit))) %>%
-    arrange(Year)
+    mutate(fit = purrr::map(
+      data, ~ nls_multstart(Length ~ vBmodel(
+        t = Age, Linf, K, t0 = -1),
+        data = .x,
+        iter = 1000,
+        start_lower = c(Linf = Linf.min, K = 0.1),
+        start_upper = c(Linf = Linf.max, K = 0.5),
+        supp_errors = 'Y',
+        na.action = na.omit))) 
+
+  # Check model convergence
+  vBconverge <- vBfit %>%
+    unnest(fit %>% map(glance))
   
-  # unnest() and tidy von Bertalannfy growth parameters
-  vBparams <- fitvBmodel %>%
-    unnest(vBfit %>% map(tidy)) %>%
-    mutate_if(is.numeric, funs(round(., 2)))
-  
-  # check model convergence
-  modelConverge <- fitvBmodel %>%
-    unnest(fitmodel %>% map(glance), .drop = TRUE) %>%
-    arrange(Year);
-  
-  # list data by 'Year' with tidy()
-  convergeNo <- subset(modelConverge, isConv == FALSE)$Year
-  
-  # tidy/list 'fitvBmodel' outputs/parameters
-  modelParams <- fitvBmodel %>%
-    filter(!Year %in% convergeNo) %>%
-    unnest(vBmodel %>% map(tidy))
-  
-  # Save model outputs/parameters
-  # saveRDS
-  
-  #### ABOVE NEEDS TO BE FIXED ####
-  
+  params <- vBfit %>%
+    unnest(fit %>% map(tidy))
   
 
-  
-  
-  
-  
+   
+} # end;
+
   
