@@ -105,10 +105,16 @@
     )
   
   # Find (pooled) min., max., and average age (years)
+  ageVector <- ageData$Age; # initialize vector
+  lengthageVector <- length(ageVector); # initialize vector length
   
-  minAge <- NA;
-  maxAge <- NA;
-  avgAge <- NA;
+  
+  
+  
+
+  
+
+  
   
   # Plot
   # Variable to plot geom_vline()
