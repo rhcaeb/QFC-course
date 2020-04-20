@@ -72,10 +72,10 @@
       nfish = n(), # number of fish observed in sample year
       mean_length = round(mean(Length, na.rm = TRUE), 2), # mean length
       sd_length = round(sd(Length, na.rm = TRUE), 2), # std deviation length
-      se_length = round(sd_length/sqrt(nfish), 2), # std error length
+      se_length = round(sd_length/sqrt(nfish), 2), # std error length # SKILL 1 & 2
       mean_weight = round(mean(Weight, na.rm = TRUE), 2), # mean weight
-      sd_weight = round(sd(Weight, na.rm = TRUE), 2), # std deviation weight
-      se_weight = round(sd_weight/sqrt(nfish), 2) # std error weight
+      sd_weight = round(sd(Weight, na.rm = TRUE), 2), # std deviation weight 
+      se_weight = round(sd_weight/sqrt(nfish), 2) # std error weight # SKILL 1 & 2
     ) %>%
     ungroup();
   
