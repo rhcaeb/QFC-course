@@ -108,6 +108,13 @@
   ageVector <- ageData$Age; # initialize vector
   lengthageVector <- length(ageVector); # initialize vector length
   
+  # State variables
+  ageMin <- ageVector[1]; # Assign to first value in 'ageVector'
+  ageMax <- ageVector[2]; # Assign to first value in 'ageVector'
+  ageSum <- 0; # Assign to 0
+  
+  # Loop through each value (i) in 'lengthageVector'
+  
   
   
   
