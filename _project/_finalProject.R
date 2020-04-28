@@ -113,6 +113,10 @@
   ageMax <- ageVector[2]; # Assign to first value in 'ageVector'
   ageSum <- 0; # Assign to 0
   
+  # Boolean variables
+  ageCheck <- FALSE; # doubles as an outlier check (i.e., max age > 30)
+  ageZero <- FALSE; # are there any age-0 individuals identified in the sample
+  
   # Loop through each value (i) in 'lengthageVector'
   for(i in 1:lengthageVector){
     # assign ageMin from ageVector if ageVector[i] < ageMin
@@ -125,12 +129,19 @@
     }
     # sum of 'ageVector'
     ageSum <- ageSum + ageVector[i]
+    # assign boolean variables
+    if(ageVector[i] > 30){
+      ageCheck <- TRUE; # doubles as outlier check
+    }
+    if(ageVector[i] == 0){
+      ageZero <- TRUE;
+    }
   }
   
-  # Calculate mean (pooled) age
+  # Calculate (pooled) mean age
   ageMn <- ageSum / lengthageVector;
     
-  ------------------------------------
+  ----------
   
   # Plot
   # Variable to plot geom_vline()
@@ -238,8 +249,6 @@
     
   modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018);
   print(summary(modelKwtSummary)); # Summary of linear regression
-  
-  
   
   # Growth Analysis ----
   
