@@ -108,20 +108,29 @@
   ageVector <- ageData$Age; # initialize vector
   lengthageVector <- length(ageVector); # initialize vector length
   
-  # State variables
+  # Define state variables
   ageMin <- ageVector[1]; # Assign to first value in 'ageVector'
   ageMax <- ageVector[2]; # Assign to first value in 'ageVector'
   ageSum <- 0; # Assign to 0
   
   # Loop through each value (i) in 'lengthageVector'
+  for(i in 1:lengthageVector){
+    # assign ageMin from ageVector if ageVector[i] < ageMin
+    if(ageVector[i] < ageMin){
+      ageMin <- ageVector[i]
+    }
+    # assign ageMax from ageVector if ageVector[i] > ageMax
+    if(ageVector[i] > ageMax){
+      ageMax <- ageVector[i]
+    }
+    # sum of 'ageVector'
+    ageSum <- ageSum + ageVector[i]
+  }
   
-  
-  
-  
-
-  
-
-  
+  # Calculate mean (pooled) age
+  ageMn <- ageSum / lengthageVector;
+    
+  ------------------------------------
   
   # Plot
   # Variable to plot geom_vline()
