@@ -108,7 +108,7 @@
   ageVector <- ageData$Age; # initialize vector
   lengthageVector <- length(ageVector); # initialize vector length
   
-  # Define state variables
+  # Define state variables; # SKILL 21
   ageMin <- ageVector[1]; # Assign to first value in 'ageVector'
   ageMax <- ageVector[2]; # Assign to first value in 'ageVector'
   ageSum <- 0; # Assign to 0
@@ -120,30 +120,28 @@
   # Loop through each value (i) in 'lengthageVector'
   for(i in 1:lengthageVector){
     # assign ageMin from ageVector if ageVector[i] < ageMin
-    if(ageVector[i] < ageMin){
+    if(ageVector[i] < ageMin){ # SKILL 22
       ageMin <- ageVector[i]
     }
     # assign ageMax from ageVector if ageVector[i] > ageMax
-    if(ageVector[i] > ageMax){
+    if(ageVector[i] > ageMax){ # SKILL 22
       ageMax <- ageVector[i]
     }
     # sum of 'ageVector'
     ageSum <- ageSum + ageVector[i]
     # assign boolean variables
     if(ageVector[i] > 30){
-      ageCheck <- TRUE; # doubles as outlier check
+      ageCheck <- TRUE; # doubles as outlier check; # SKILL 23
     }
     if(ageVector[i] == 0){
-      ageZero <- TRUE;
+      ageZero <- TRUE; # SKILL 23
     }
   }
   
   # Calculate (pooled) mean age
   ageMn <- ageSum / lengthageVector;
-    
-  ----------
-  
-  # Plot
+
+  # Plot Cohort
   # Variable to plot geom_vline()
   vline <- ageData %>%  
     group_by(Year) %>%
