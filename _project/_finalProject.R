@@ -92,6 +92,14 @@
   
   # ANOVA Results ...... lip sum
   
+  # Count 'Dwarf walleye'
+  dwarfCount <- grep("Dwarf", walleyeData$Remarks); # SKILL 59
+  length(dwarfCount); # A total of 88 individual walleye identified as 'Dwarf'
+  
+  # Dwarf walleye metrics
+  mean(walleyeData$Length[dwarfCount]); # mean length dwarf walleye; # SKILL 55
+  mean(walleyeData$Age[dwarfCount]); # mean age dwarf walleye; # SKILL 55
+  
   # Cohort Analysis ----
   # Create new variable that doesn't include missing sex/ages
   ageData <- walleyeData %>%
