@@ -2,6 +2,10 @@
   
   # MSU - Programming Fundamentals Using R
   # Final Project
+  
+  # The purpose or 'theme' of this final project is to
+  # analyze the commercial fishery (more specifically walleye populations)
+  # in Lake Winnipeg
 
   rm(list=ls()); # clear/remove objects from the environment
   options(show.error.locations = TRUE); # debugging / line error(s)
@@ -48,8 +52,8 @@
     filter(Species == "Walleye" &   # walleye only
              Count == "1"); # individual fish data only
   
-  # Save reformatted dataframe (Walleye Data) # SKILL 28
-  write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv');
+  # Save reformatted dataframe (Walleye Data)      
+  write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv'); # SKILL 28
   
   # Length/Weight Analysis ----
   
@@ -121,7 +125,7 @@
   ageMax <- ageVector[2]; # Assign to first value in 'ageVector'
   ageSum <- 0; # Assign to 0
   
-  # Boolean variables
+  # Boolean variables; # SKILL 23
   ageCheck <- FALSE; # doubles as an outlier check (i.e., max age > 30)
   ageZero <- FALSE; # are there any age-0 individuals identified in the sample
   
@@ -180,16 +184,16 @@
   plot(agePlot);     
   
   # Age distribution by 'Sex' and 'Year'
-  colorFill <- c('#1b9e77', '#d95f02', '#7570b3'); # hex (female, male, NA);
+  colorFill <- c('#1b9e77', '#d95f02', '#7570b3'); # hex (female, male, NA); # SKILL 31
   
   agesexPlot <- ggplot(data = ageData,
                        mapping = aes(x = as.factor(Age), fill = Sex)) +
     geom_bar(color = 'black', stat = 'count') + # SKILL 34
     facet_wrap(~ Year, ncol = 4, scales = "free_x") +
     ggtitle('Walleye - Age distribution by sex and sample year') +
-    ylab('Count\n') +
-    xlab('\nAge (years)') +
-    scale_fill_manual(values = colorFill, # SKILL 30
+    ylab('Count\n') + # SKILL 29
+    xlab('\nAge (years)') + # SKILL 29
+    scale_fill_manual(values = colorFill, # SKILL 31
                       guide = guide_legend(title = 'Sex', 
                                 title.position = 'top', 
                                 title.theme = element_text(size = 10, 
@@ -204,7 +208,7 @@
   ageBoxPlot <- ggplot(data = ageData,
                        mapping = aes(x = as.factor(Sex),
                                      y = Age)) +
-    geom_boxplot(aes(fill = as.factor(Sex))) +
+    geom_boxplot(aes(fill = as.factor(Sex))) + # SKILL 51
     stat_summary(fun.y = mean, geom = 'point', shape = 21, fill = 'white') +
     facet_wrap(~ Year, ncol = 4) +
     ggtitle('Walleye - Age distribution by sex and sample year') +
