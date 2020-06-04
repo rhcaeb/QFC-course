@@ -10,7 +10,7 @@
   rm(list=ls()); # clear/remove objects from the environment
   options(show.error.locations = TRUE); # debugging / line error(s)
   
-  set.seed(54761); # random number generation
+  set.seed(54761); # random number generation; # SKILL 53
   
   # Libraries ----
   
@@ -117,7 +117,7 @@
     )
   
   # Find (pooled) min., max., and average age (years)
-  ageVector <- ageData$Age; # initialize vector
+  ageVector <- ageData$Age; # initialize vector; # SKILL
   lengthageVector <- length(ageVector); # initialize vector length
   
   # Define state variables; # SKILL 21
@@ -156,7 +156,7 @@
   # Plot Cohort
   # Variable to plot geom_vline()
   vline <- ageData %>%  
-    group_by(Year) %>%
+    group_by(Year) %>% # SKILL 41
     summarise(
       line = mean(Age, na.rm = TRUE) # mean age for each 'Year'
     ) %>%
@@ -235,7 +235,7 @@
   modelKlen <- ggplot(cond2018,
                       mapping = aes(x = Length, y = condition)) +
     geom_point(size = 2, shape = 21) +
-    geom_smooth(method = 'lm', colour = 'red', size = 1) +
+    geom_smooth(method = 'lm', colour = 'red', size = 1) + # SKILL 57
     ggtitle('Walleye - Condition vs Length (2018)') +
     ylab('Condition (K)\n') +
     xlab('\nTotal Length (mm)') +
@@ -249,8 +249,8 @@
   
   modelKwt <- ggplot(cond2018,
                      mapping = aes(x = Weight, y = condition)) +
-    geom_point(size = 2, shape = 21) +
-    geom_smooth(method = 'lm', colour = 'red', size = 1) +
+    geom_point(size = 2, shape = 21) + # SKILL 32
+    geom_smooth(method = 'lm', colour = 'red', size = 1) + # SKILL 32
     ggtitle('Walleye - Condition vs Weight (2018)') +
     ylab('Condition (K)\n') +
     xlab('\nWeight (g)') +
