@@ -47,13 +47,29 @@
       condition = 'K' # index of health based on obs. to expected weight.
     );
   
+  # User Input ----
+  
+  favFish <- readline("What is your favorite fish species? "); # SKILL 4
+  
+  fishList <- unique(lakeWinnipeg$Species); # preview all fish species captured
+  paste0(fishList); # SKILL 5
+  
+  favFishCaptured <- readline(
+    "Was your favorite fish caught in Lake Winnipeg? Check 'fishList'! "); # SKILL 4
+  
+  # REGARDLESS OF YOUR FAVORITE FISH...
+  # WE WILL BE ANALYZING WALLEYE DATA! (SORRY)
+  
   # Walleye Data
   walleyeData <- lakeWinnipeg %>%
-    filter(Species == "Walleye" &   # walleye only
+    filter(Species == "Walleye" &  # walleye only
              Count == "1"); # individual fish data only
   
   # Save reformatted dataframe (Walleye Data)      
   write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv'); # SKILL 28
+  
+  # Data Overview
+  pairs(~ Weight + Length + Age + condition, data = walleyeData)
   
   # Length/Weight Analysis ----
   
@@ -85,16 +101,14 @@
   
   # Analysis of Variance 
   # Length ~ Year
-  lenANOVA <- aov(formula = Length ~ Year, data = walleyeData);
-  print(summary(lenANOVA));
-  
-  # ANOVA Results ...... lip sum
+  lenANOVA <- aov(formula = Length ~ Year, data = walleyeData); # SKILL 49
+  print(summary(lenANOVA)); 
   
   # Weight ~ Year
-  wtANOVA <- aov(formula = Weight ~ Year, data = walleyeData);
+  wtANOVA <- aov(formula = Weight ~ Year, data = walleyeData); # SKILL 49
   print(summary(wtANOVA));
   
-  # ANOVA Results ...... lip sum
+  # ANOVA Results 
   
   # Count 'Dwarf walleye'
   dwarfCount <- grep("Dwarf", walleyeData$Remarks); # SKILL 59
@@ -130,7 +144,7 @@
   ageZero <- FALSE; # are there any age-0 individuals identified in the sample
   
   # Loop through each value (i) in 'lengthageVector'
-  for(i in 1:lengthageVector){
+  for(i in 1:lengthageVector){ # SKILL 24
     # assign ageMin from ageVector if ageVector[i] < ageMin
     if(ageVector[i] < ageMin){ # SKILL 22
       ageMin <- ageVector[i]
