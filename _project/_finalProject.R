@@ -69,7 +69,7 @@
   write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv'); # SKILL 28
   
   # Data Overview
-  pairs(~ Weight + Length + Age + condition, data = walleyeData)
+  pairs(~ Weight + Length + Age + condition, data = walleyeData); # SKILL 35
   
   # Length/Weight Analysis ----
   
@@ -274,59 +274,6 @@
   modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018);
   print(summary(modelKwtSummary)); # Summary of linear regression
   
-  # Growth Analysis ----
-  
-  # Define von Bertalannfy Growth Model
-  vBmodel <- function(t, Linf, K = NULL, t0 = -1)
-    
-  {
-    
-    if(length(Linf) == 3) {
-      
-      K <- Linf[[2]] # Brody Coefficient
-      t0 <- Linf[[3]] # time/age when the average length was zero
-      Linf <- Linf[[1]] # Asymptotic length
-      
-    }
-    
-    Linf * (1 - exp(-K * (t - t0)))
-    
-  }
-  
-  # Find minimum/maximum 'Length' for nls_multstart()
-  Linf <- ageData %>%
-    group_by(Year, Species) %>%
-    summarise(
-      maxLen = max(Length, na.rm = TRUE)
-    ) %>%
-    ungroup()
-  
-  Linf.min <- min(Linf$maxLen);
-  Linf.max <- max(Linf$maxLen);
-  
-  # Apply vB fit
-  vBfit <- ageData %>%
-    group_by(., Year) %>%
-    nest() %>%
-    mutate(fit = purrr::map(
-      data, ~ nls_multstart(Length ~ vBmodel(
-        t = Age, Linf, K, t0 = -1),
-        data = .x,
-        iter = 1000,
-        start_lower = c(Linf = Linf.min, K = 0.1),
-        start_upper = c(Linf = Linf.max, K = 0.5),
-        supp_errors = 'Y',
-        na.action = na.omit))) 
-
-  # Check model convergence
-  vBconverge <- vBfit %>%
-    unnest(fit %>% map(glance))
-  
-  params <- vBfit %>%
-    unnest(fit %>% map(tidy))
-  
-
-   
 } # end;
 
   
