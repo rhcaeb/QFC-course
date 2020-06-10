@@ -39,7 +39,7 @@
   lakeWinnipeg <- lakeWinnipegRAW %>% # dplyr() function # SKILL 40
     select("Year", "ID", "Site", "Set", "Mesh Size", "Fish #", "Species",
            "Count", "Weight", "Length", "Mat.", "Sex", "Age",
-           "Remarks", "K") %>%
+           "Remarks", "K") %>% 
     rename( # SKILL 45
       meshsize = 'Mesh Size',
       fishnumber = 'Fish #',
@@ -65,12 +65,17 @@
     filter(Species == "Walleye" &  # walleye only
              Count == "1"); # individual fish data only
   
+  # add log-log vector
+  
+  walleyeData$loglength <- log(walleyeData$Length); # log (def = base10) length; # SKILL 26
+  walleyeData$logage <- log(walleyeData$Age); # log (def = base10) age; # SKILL 26
+  
   # Save reformatted dataframe (Walleye Data)      
   write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv'); # SKILL 28
   
   # Data Overview
   pairs(~ Weight + Length + Age + condition, data = walleyeData); # SKILL 35
-  
+
   # Length/Weight Analysis ----
   
   # length-weight regression / outlier check by 'Year'
