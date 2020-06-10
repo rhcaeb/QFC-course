@@ -52,6 +52,7 @@
   favFish <- readline("What is your favorite fish species? "); # SKILL 4
   
   fishList <- unique(lakeWinnipeg$Species); # preview all fish species captured
+
   paste0(fishList); # SKILL 5
   
   favFishCaptured <- readline(
