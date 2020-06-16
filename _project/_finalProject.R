@@ -22,6 +22,8 @@
   library(nls.multstart); # non-linear regression (von Bertalannfy growth)
   # install.packages('broom')
   library(broom); # clear/summarise model outputs (e.g., nls)
+  # install.packages('FSA') # Fisheries assessment package
+  library(FSA); # vbStarts() to initialize von Bert. params
   
   # Load Data ----
   
@@ -279,6 +281,31 @@
     
   modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018);
   print(summary(modelKwtSummary)); # Summary of linear regression
+  
+  # Growth Analysis ----
+  
+  walleyeGrowth <- walleyeData %>%
+    select(Length, Age); # Pooled age@length vector
+  
+  walleyevBParams <- vbStarts(
+    Length ~ Age, data = walleyeGrowth); # FSA() function
+  
+  ## list von Bert. params from vBstarts()
+  walleyevBParams$Linf; # asymptotic length
+  walleyevBParams$K; # Brody coefficient
+  walleyevBParams$t0; # length at age-0
+  
+  ## Predict age at length
+  predAge <- function(length, Linf, K, t0){ 
+    age <- round((log(1-(length/Linf))/(-K)) + t0, 2);
+    return(age);
+  }
+  
+  ## Predict age at length (350) with predicted 'walleyevBParams'
+  predAge(length = 350, Linf = 723, K = 0.153, t0 = -0.597);
+  # OR!
+  # predAge(length = 350, Linf = walleyevBParams$Linf, K = walleyevBparams$K...)
+  
   
 } # end;
 
