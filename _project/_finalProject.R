@@ -287,7 +287,7 @@
   walleyeGrowth <- walleyeData %>%
     select(Length, Age); # Pooled age@length vector
   
-  walleyevBParams <- vbStarts(
+  walleyevBParams <- vbStarts( # SKILL 40
     Length ~ Age, data = walleyeGrowth); # FSA() function
   
   ## list von Bert. params from vBstarts()
@@ -296,13 +296,13 @@
   walleyevBParams$t0; # length at age-0
   
   ## Predict age at length
-  predAge <- function(length, Linf, K, t0){ 
+  predAge <- function(length, Linf, K, t0){ # SKILL 37
     age <- round((log(1-(length/Linf))/(-K)) + t0, 2);
     return(age);
   }
   
   ## Predict age at length (350) with predicted 'walleyevBParams'
-  predAge(length = 350, Linf = 723, K = 0.153, t0 = -0.597);
+  age350 <- predAge(length = 350, Linf = 723, K = 0.153, t0 = -0.597); # SKILL 38
   # OR!
   # predAge(length = 350, Linf = walleyevBParams$Linf, K = walleyevBparams$K...)
   
