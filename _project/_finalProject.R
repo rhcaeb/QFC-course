@@ -306,6 +306,30 @@
   # OR!
   # predAge(length = 350, Linf = walleyevBParams$Linf, K = walleyevBparams$K...)
   
+  # Proportional Side Distribution (PSD) ----
+  # E.g. frequency (number) of fish in a given size distrubition (or category)
+  
+  ## Substock (0 mm)
+  substock <- which(walleyeData$Length <= 249);
+  
+  ## Stock (250 mm)
+  stock <- which(walleyeData$Length >= 250 & walleyeData$Length <= 379);
+  
+  ## Quality (380 mm)
+  quality <- which(walleyeData$Length >= 380 & walleyeData$Length <= 509);
+  
+  ## Preferred (510 mm)
+  preferred <- which(walleyeData$Length >= 510 & walleyeData$Length <= 629);
+  
+  ## Memorable (630 mm)
+  memorable <- which(walleyeData$Length >= 630 & walleyeData$Length <= 759);
+  
+  ## Trophy (> 760 mm)
+  trophy <- which(walleyeData$Length >= 760);
+  
+  # Mortality ----
+  ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
+     
   
 } # end;
 
