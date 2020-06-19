@@ -330,9 +330,34 @@
   # Mortality ----
   ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
   
+  # Subset individual fish that is either "M" or "F", NULLs are removed.
+  sexCode <- grep("M|F", walleyeData$Sex);
   
-     
+  # Index 'sexCode' vec. to subset walleyeData
+  mort <- walleyeData[sexCode, ];
   
-} # end;
+  # catch at age table
+  catchAge <- mort %>%
+    filter(!is.na(Age)) %>% # remove sex(M/F) that Age == 'NA'
+    group_by(Age) %>%
+    summarise(count = n()) %>%
+    ungroup() %>%
+    complete(Age = seq(1:ageMax)) %>% 
+    replace_na(list(Age = 0)) %>%  # if there are 0 fish in a given cohort
+    filter(Age >= age350) %>% # recruit mortality
+    mutate(Code = seq(0, ageMax-age350), # age recoded at 'age350' for calcs
+           T = round(Code * count, 2));
+  
+  # create objects to calculate S/Z/A
+  sumcount <- sum(catchAge[, 2]); # total count
+  sumT <- sum(catchAge[, 4]); # total 'T' (Code x Count)
+  
+  # calculate S/Z/A
+  S350 <- round(sumT/(sumcount+sumT-1), 4) # survival (recruit)
+  Z350 <- round(-log(S350), 2); # instantaneous mortality
+  A350 <- round(1-(exp(-Z350)), 4) # annual mortality
+
+  
+  } # end;
 
   
