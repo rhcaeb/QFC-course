@@ -310,25 +310,27 @@
   # E.g. frequency (number) of fish in a given size distrubition (or category)
   
   ## Substock (0 mm)
-  substock <- which(walleyeData$Length <= 249);
+  substock <- which(walleyeData$Length <= 249); # SKILL 11 & 58
   
   ## Stock (250 mm)
-  stock <- which(walleyeData$Length >= 250 & walleyeData$Length <= 379);
+  stock <- which(walleyeData$Length >= 250 & walleyeData$Length <= 379); # SKILL 11 & 58
   
   ## Quality (380 mm)
-  quality <- which(walleyeData$Length >= 380 & walleyeData$Length <= 509);
+  quality <- which(walleyeData$Length >= 380 & walleyeData$Length <= 509); # SKILL 11 & 58
   
   ## Preferred (510 mm)
-  preferred <- which(walleyeData$Length >= 510 & walleyeData$Length <= 629);
+  preferred <- which(walleyeData$Length >= 510 & walleyeData$Length <= 629); # SKILL 11 & 58
   
   ## Memorable (630 mm)
-  memorable <- which(walleyeData$Length >= 630 & walleyeData$Length <= 759);
+  memorable <- which(walleyeData$Length >= 630 & walleyeData$Length <= 759); # SKILL 11 & 58
   
   ## Trophy (> 760 mm)
-  trophy <- which(walleyeData$Length >= 760);
+  trophy <- which(walleyeData$Length >= 760); # SKILL 11 & 58
   
   # Mortality ----
   ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
+  
+  
      
   
 } # end;
