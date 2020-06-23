@@ -331,8 +331,8 @@
   ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
   
   # Subset individual fish that is either "M" or "F", NULLs are removed.
-  sexCode <- grep("M|F", walleyeData$Sex);
-  
+  sexCode <- grep("M|F", walleyeData$Sex); # SKILL 12 & 13
+   
   # Index 'sexCode' vec. to subset walleyeData
   mort <- walleyeData[sexCode, ];
   
