@@ -54,7 +54,6 @@
   favFish <- readline("What is your favorite fish species? "); # SKILL 4
   
   fishList <- unique(lakeWinnipeg$Species); # preview all fish species captured
-
   paste0(fishList); # SKILL 5
   
   favFishCaptured <- readline(
@@ -171,6 +170,8 @@
       ageZero <- TRUE; # SKILL 23
     }
   }
+  # Check loop assigned correct max. age  
+  maxage_check <- max(walleyeData$Age, na.rm = TRUE); # SKILL 15
   
   # Calculate (pooled) mean age
   ageMn <- ageSum / lengthageVector;
@@ -296,7 +297,7 @@
   walleyevBParams$t0; # length at age-0
   
   ## Predict age at length
-  predAge <- function(length, Linf, K, t0){ # SKILL 37
+  predAge <- function(length, Linf, K, t0){ # SKILL 36 &   37
     age <- round((log(1-(length/Linf))/(-K)) + t0, 2);
     return(age);
   }
