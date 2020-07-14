@@ -130,6 +130,11 @@
   ageData <- walleyeData %>%
     filter(!is.na(Sex) & !is.na(Age)) # remove sex/ages == 'NA'
   
+  # Randomly sample 'ageData'
+  randomAges <- sample(x=ageData$Age, size = 500, replace = TRUE); # SKILL 52
+  hist(randomAges);
+  
+  # Cohort vector (cohort / count)
   walleyeCohort <- ageData %>%
     group_by(Year, Species) %>%
     summarise(
@@ -297,7 +302,7 @@
   walleyevBParams$t0; # length at age-0
   
   ## Predict age at length
-  predAge <- function(length, Linf, K, t0){ # SKILL 36 &   37
+  predAge <- function(length, Linf, K, t0){ # SKILL 36 &  37 & 39
     age <- round((log(1-(length/Linf))/(-K)) + t0, 2);
     return(age);
   }
