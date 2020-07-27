@@ -59,17 +59,17 @@
   }
   # Check user favorite fish species == 'northern pike'
   else if(favFish == "Northern Pike" | favFish == "northern pike"){
-    paste0('Fun to fish for, but will not be exploring this species further!');
+    paste0('Fun to angle, but will not be exploring this species further!');
   }
   # Check user favorite fish species == 'cutthroat trout'
   else if(favFish == "Cutthroat Trout" | favFish == "cutthroat trout"){
-    paste0('This species does not inhabit lake winnipeg!');
+    paste0('This species does not inhabit Lake Winnipeg!');
   }
   # Check user favorite fish species == 'white sucker'
   else if(favFish == 'White Sucker' | favFish == 'white sucker'){
     paste0('Seriously?');
   }
-  # error condition
+  # error condition (note; may need to add each species for this to be valid)
   else{
     paste0('I do not recognize this fish species!'); # SKILL 10
   }
@@ -77,6 +77,15 @@
   # Supplemental fish captured in lake winnipeg
   fishList <- unique(lakeWinnipeg$Species); # preview all fish species captured
   paste0(fishList); # SKILL 5
+  
+  # Before we dive into walleye....
+  caughtfish <- readline("Have you ever caught, or angled for walleye? ");
+  if(caughtfish != 'Yes' | caughtfish != 'yes'){ # SKILL 8
+    paste0('You are missing out! They are delicious')
+  }
+  else{
+    paste0('Thank goodness! I was worried for a second.')
+  }
   
   # Walleye Data
   walleyeData <- lakeWinnipeg %>%
