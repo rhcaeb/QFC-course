@@ -80,7 +80,7 @@
   
   # Before we dive into walleye....
   caughtfish <- readline("Have you ever caught, or angled for walleye? ");
-  if(caughtfish != 'Yes' | caughtfish != 'yes'){ # SKILL 8
+  if(caughtfish != 'Yes' | caughtfish != 'yes'){ # SKILL 7 & 8
     paste0('You are missing out! They are delicious')
   }
   else{
@@ -183,11 +183,11 @@
   # Loop through each value (i) in 'lengthageVector'
   for(i in 1:lengthageVector){ # SKILL 24
     # assign ageMin from ageVector if ageVector[i] < ageMin
-    if(ageVector[i] < ageMin){ # SKILL 22
+    if(ageVector[i] < ageMin){ # SKILL 7 & 22
       ageMin <- ageVector[i]
     }
     # assign ageMax from ageVector if ageVector[i] > ageMax
-    if(ageVector[i] > ageMax){ # SKILL 22
+    if(ageVector[i] > ageMax){ # SKILL 7 & 22
       ageMax <- ageVector[i]
     }
     # sum of 'ageVector'
@@ -367,7 +367,7 @@
   # Index 'sexCode' vec. to subset walleyeData
   mort <- walleyeData[sexCode, ];
   
-  # catch at age table
+  # catch at age table; # SKILL 7
   catchAge <- mort %>%
     filter(!is.na(Age)) %>% # remove sex(M/F) that Age == 'NA'
     group_by(Age) %>%
@@ -387,6 +387,12 @@
   S350 <- round(sumT/(sumcount+sumT-1), 4) # survival (recruit)
   Z350 <- round(-log(S350), 2); # instantaneous mortality
   A350 <- round(1-(exp(-Z350)), 4) # annual mortality
+  
+  # Note: does ageMax show up in multiple sampling years?
+  # this can have influece on estimates of Z350.
+  # let's test a couple of years...
+  
+  age2009 <- ageData 
 
   
   } # end;
