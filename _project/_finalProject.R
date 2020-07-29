@@ -341,10 +341,10 @@
   # E.g. frequency (number) of fish in a given size distrubition (or category)
   
   ## Substock (0 mm)
-  substock <- which(walleyeData$Length <= 249); # SKILL 11 & 58
+  substock <- which(walleyeData$Length <= 249); # SKILL 7 & 11 & 58
   
   ## Stock (250 mm)
-  stock <- which(walleyeData$Length >= 250 & walleyeData$Length <= 379); # SKILL 11 & 58
+  stock <- which(walleyeData$Length >= 250 & walleyeData$Length <= 379); # SKILL 7 & 11 & 58
   
   ## Quality (380 mm)
   quality <- which(walleyeData$Length >= 380 & walleyeData$Length <= 509); # SKILL 11 & 58
@@ -362,7 +362,7 @@
   ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
   
   # Subset individual fish that is either "M" or "F", NULLs are removed.
-  sexCode <- grep("M|F", walleyeData$Sex); # SKILL 12 & 13
+  sexCode <- grep("M|F", walleyeData$Sex); # SKILL 12 & 13 & 62
    
   # Index 'sexCode' vec. to subset walleyeData
   mort <- walleyeData[sexCode, ];
