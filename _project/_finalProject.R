@@ -388,11 +388,27 @@
   Z350 <- round(-log(S350), 2); # instantaneous mortality
   A350 <- round(1-(exp(-Z350)), 4) # annual mortality
   
-  # Note: does ageMax show up in multiple sampling years?
+  # Note: does ageMax show up in consecutive multiple sampling years?
   # this can have influece on estimates of Z350.
   # let's test a couple of years...
   
-  age2009 <- ageData 
+  # 2009
+  age2009 <- ageData %>%
+    filter(Year == '2009') %>%
+    select(Age) %>%
+    data.matrix();
+  
+  # 2010
+  age2010 <- ageData %>%
+    filter(Year == '2010') %>%
+    select(Age) %>%
+    data.matrix();
+  
+  # Return values that occur in both vectors
+  intersect(age2009, age2010); # SKILL 63
+  # ageMax does not occur in 2009, 2010.. this would affect Z350 estimates
+  # for these sampling years.
+  
 
   
   } # end;
