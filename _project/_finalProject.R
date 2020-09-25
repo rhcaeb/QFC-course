@@ -55,36 +55,36 @@
   
   # Check user favorite fish species == 'walleye'
   if(favFish == "Walleye" | favFish == "walleye"){ # SKILL 9
-    paste0('Good choice, you are in for a treat during later analyses!');
+    cat('Good choice, you are in for a treat during later analyses!');
   }
   # Check user favorite fish species == 'northern pike'
   else if(favFish == "Northern Pike" | favFish == "northern pike"){
-    paste0('Fun to angle, but will not be exploring this species further!');
+    cat('Fun to angle, but will not be exploring this species further!');
   }
   # Check user favorite fish species == 'cutthroat trout'
   else if(favFish == "Cutthroat Trout" | favFish == "cutthroat trout"){
-    paste0('This species does not inhabit Lake Winnipeg!');
+    cat('This species does not inhabit Lake Winnipeg!');
   }
   # Check user favorite fish species == 'white sucker'
   else if(favFish == 'White Sucker' | favFish == 'white sucker'){
-    paste0('Seriously?');
+    cat('Seriously?');
   }
   # error condition (note; may need to add each species for this to be valid)
   else{
-    paste0('I do not recognize this fish species!'); # SKILL 10
+    cat('I do not recognize this fish species!'); # SKILL 10
   }
   
   # Supplemental fish captured in lake winnipeg
   fishList <- unique(lakeWinnipeg$Species); # preview all fish species captured
-  paste0(fishList); # SKILL 5
+  print(fishList); # SKILL 5
   
   # Before we dive into walleye....
   caughtfish <- readline("Have you ever caught, or angled for walleye? ");
   if(caughtfish != 'Yes' | caughtfish != 'yes'){ # SKILL 7 & 8
-    paste0('You are missing out! They are delicious')
+    cat('You are missing out! They are delicious')
   }
   else{
-    paste0('Thank goodness! I was worried for a second.')
+    cat('Thank goodness! I was worried for a second.')
   }
   
   # Walleye Data
