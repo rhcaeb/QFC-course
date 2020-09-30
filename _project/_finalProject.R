@@ -134,11 +134,15 @@
   # Analysis of Variance 
   # Length ~ Year
   lenANOVA <- aov(formula = Length ~ Year, data = walleyeData); # SKILL 49
-  print(summary(lenANOVA)); 
+  print(summary(lenANOVA));
+  cat('The results of the analysis of variance suggest the probability that
+      walleye length come from the same distribution is <2e-16.');
   
   # Weight ~ Year
   wtANOVA <- aov(formula = Weight ~ Year, data = walleyeData); # SKILL 49
   print(summary(wtANOVA));
+  cat('The results of the analysis of variance suggest the probability that
+      walleye weight come from the same distribution is <2e-16.');
   
   # ANOVA Results 
   
@@ -298,7 +302,7 @@
   modelKlenSummary <- lm(formula = condition ~ Length, data = cond2018); # SKILL 56
   print(summary(modelKlenSummary)); # Summary of linear regression
   cat('There is no significant (adj. r-squared = -0.0005833) correlation between
-      condition and length from walleye data collected in 2018.')
+      condition and length from walleye data collected in 2018.');
   
   # 2018: Linear regression (Condition ~ Weight)
   
@@ -315,7 +319,7 @@
   modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018); # SKILL 56
   print(summary(modelKwtSummary)); # Summary of linear regression
   cat('There is no significant (adj. r-squared = 0.02776) correlation between
-      condition and weight from walleye data collected in 2018.')
+      condition and weight from walleye data collected in 2018.');
   
   # Growth Analysis ----
   
