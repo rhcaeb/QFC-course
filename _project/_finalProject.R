@@ -412,12 +412,16 @@
     select(Age) %>%
     data.matrix();
   
+  # Save 2009 && 2010 variables as .rdata for later analyses
+  ages2009_2010 <- list("age2009" = age2009,
+                        "age2010" = age2010);
+  save(ages2009_2010, file = "_project/ageList2009_10.rdata"); # SKILL 65
+
+  
   # Return values that occur in both vectors
   print(intersect(age2009, age2010)); # SKILL 63
   # ageMax does not occur in 2009, 2010.. this would affect Z350 estimates
   # for these sampling years.
-  
-
   
   } # end;
 
