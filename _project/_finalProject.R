@@ -295,8 +295,10 @@
     theme_bw()
   plot(modelKlen); # plot
   
-  modelKlenSummary <- lm(formula = condition ~ Length, data = cond2018);
+  modelKlenSummary <- lm(formula = condition ~ Length, data = cond2018); # SKILL 56
   print(summary(modelKlenSummary)); # Summary of linear regression
+  cat('There is no significant (adj. r-squared = -0.0005833) correlation between
+      condition and length from walleye data collected in 2018.')
   
   # 2018: Linear regression (Condition ~ Weight)
   
@@ -310,8 +312,10 @@
     theme_bw() 
   plot(modelKwt); # plot
     
-  modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018);
+  modelKwtSummary <- lm(formula = condition ~ Weight, data = cond2018); # SKILL 56
   print(summary(modelKwtSummary)); # Summary of linear regression
+  cat('There is no significant (adj. r-squared = 0.02776) correlation between
+      condition and weight from walleye data collected in 2018.')
   
   # Growth Analysis ----
   
@@ -373,10 +377,10 @@
     group_by(Age) %>%
     summarise(count = n()) %>%
     ungroup() %>%
-    complete(Age = seq(1:ageMax)) %>% 
+    complete(Age = seq(1:ageMax)) %>% # SKILL 18
     replace_na(list(Age = 0)) %>%  # if there are 0 fish in a given cohort
     filter(Age >= age350) %>% # recruit mortality
-    mutate(Code = seq(0, ageMax-age350), # age recoded at 'age350' for calcs
+    mutate(Code = seq(0, ageMax-age350), # age recoded at 'age350' for calcs; # SKILL 18
            T = round(Code * count, 2));
   
   # create objects to calculate S/Z/A
@@ -405,7 +409,7 @@
     data.matrix();
   
   # Return values that occur in both vectors
-  intersect(age2009, age2010); # SKILL 63
+  print(intersect(age2009, age2010)); # SKILL 63
   # ageMax does not occur in 2009, 2010.. this would affect Z350 estimates
   # for these sampling years.
   
