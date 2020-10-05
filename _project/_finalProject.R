@@ -414,16 +414,16 @@
   # let's test a couple of years...
   
   # 2009
-  age2009 <- ageData %>%
+  age2009 <- ageData %>% 
     filter(Year == '2009') %>%
     select(Age) %>%
-    data.matrix();
+    data.matrix(); # SKILL 16
   
   # 2010
   age2010 <- ageData %>%
     filter(Year == '2010') %>%
     select(Age) %>%
-    data.matrix();
+    data.matrix(); # SKILL 16
   
   # Save 2009 && 2010 variables as .rdata for later analyses
   ages2009_2010 <- list("age2009" = age2009,
