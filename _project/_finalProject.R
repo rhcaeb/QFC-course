@@ -53,6 +53,10 @@
   
   favFish <- readline("What is your favorite fish species? "); # SKILL 4
   
+  ## Output mixed message of users 'favFish'
+  
+  cat("Cool! I didn't know you liked", favFish, ", they are an interesting"); # SKILL 5
+  
   # Check user favorite fish species == 'walleye'
   if(favFish == "Walleye" | favFish == "walleye"){ # SKILL 9
     cat('Good choice, you are in for a treat during later analyses!');
@@ -99,6 +103,11 @@
   
   # Save reformatted dataframe (Walleye Data)      
   write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv'); # SKILL 28
+  
+  # Re-import saved .csv file
+  # This could be commented out; merely to show how to import .csv file
+  # from project/root folder
+  walleyeCSV <- read.csv('_project/lakeWinnipeg_walleyeData.csv'); # SKILL 14
   
   # Data Overview
   pairs(~ Weight + Length + Age + condition, data = walleyeData); # SKILL 35
@@ -370,7 +379,11 @@
   ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
   
   # Subset individual fish that is either "M" or "F", NULLs are removed.
-  sexCode <- grep("M|F", walleyeData$Sex); # SKILL 12 & 13 & 62
+  sexCode <- grep("M|F", walleyeData$Sex); # SKILL 12 & 62
+  
+  # Subset female walleye, and age > 4. This can be considered female fish
+  # 'recruited' to the fishery
+  femaleRecruits <- filter(walleyeData, Sex == "F" & Age > 4); # SKILL 13
    
   # Index 'sexCode' vec. to subset walleyeData
   mort <- walleyeData[sexCode, ];
