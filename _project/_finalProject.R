@@ -296,6 +296,27 @@
           axis.ticks.x = element_blank())
   plot(ageBoxPlot);
   
+
+  # Compare age (means) from 2015 and 2016 sample years
+  ageData15 <- filter(ageData, Year == '2015');
+  ageData16 <- filter(ageData, Year == '2016');
+  
+  # two sample t-test 
+  ttest1 <- t.test(x = ageData15$Age, y = ageData16$Age); # SKILL 50
+  print(ttest1); # summary t-test
+  cat('The mean of x and y are 4.98 and 5.48, respectively. There is no
+      significant difference between the means of x and y (p-value < 2.2e-16).');
+  
+  # Compare age (means) from 2012 and 2013 sample years
+  ageData12 <- filter(ageData, Year == '2012');
+  ageData13 <- filter(ageData, Year == '2013');
+  
+  # two sample t-test
+  ttest2 <- t.test(x = ageData12$Age, y = ageData13$Age); # SKILL 50
+  print(ttest2); # summary t-test
+  cat('The mean of x and y are 4.73 and 4.50, respectively. There is no
+      significant difference between the means of x and y (p = 0.000189).');
+  
   # Condition Analysis ----
   # 2018: Linear regression (Condition ~ Length)
   
