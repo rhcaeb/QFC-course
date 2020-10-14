@@ -96,7 +96,10 @@
     filter(Species == "Walleye" &  # walleye only
              Count == "1"); # individual fish data only
   
-  # add log-log vector
+  # Adjust/rearrange columns in 'walleyeData' df
+  adjwalleyeData <- walleyeData[ ,c(17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1)] # SKILL 27
+  
+  # add log-log vector (ignore adjusted dataframe above)
   
   walleyeData$loglength <- log(walleyeData$Length); # log (def = base10) length; # SKILL 26
   walleyeData$logage <- log(walleyeData$Age); # log (def = base10) age; # SKILL 26
