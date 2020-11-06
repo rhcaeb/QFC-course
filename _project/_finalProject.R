@@ -97,7 +97,7 @@
              Count == "1"); # individual fish data only
   
   # Adjust/rearrange columns in 'walleyeData' df
-  adjwalleyeData <- walleyeData[ ,c(17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1)] # SKILL 27
+  adjwalleyeData <- walleyeData[ ,c(15,14,13,12,11,10,9,8,7,6,5,4,3,2,1)] # SKILL 27
   
   # add log-log vector (ignore adjusted dataframe above)
   
@@ -317,6 +317,8 @@
   cat('The mean of x and y are 4.73 and 4.50, respectively. There is no
       significant difference between the means of x and y (p = 0.000189).');
   
+  # Cohort Matrix
+
   # Condition Analysis ----
   # 2018: Linear regression (Condition ~ Length)
   
