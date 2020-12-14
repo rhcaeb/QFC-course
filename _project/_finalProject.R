@@ -114,6 +114,9 @@
   
   # Data Overview
   pairs(~ Weight + Length + Age + condition, data = walleyeData); # SKILL 35
+  
+  # Grab a random fish length from a row of your choice (e.g., below is row 77)
+  randomfish <- walleyeData[77, 10]; # row/col # SKILL 15
 
   # Length/Weight Analysis ----
   
