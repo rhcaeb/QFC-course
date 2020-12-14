@@ -104,6 +104,9 @@
   walleyeData$loglength <- log(walleyeData$Length); # log (def = base10) length; # SKILL 26
   walleyeData$logage <- log(walleyeData$Age); # log (def = base10) age; # SKILL 26
   
+  # Round condition and log age/length col's
+  walleyeData[, 15:17] <- round(x = walleyeData[, 15:17], digits = 4); # SKILL 47
+  
   # Save reformatted dataframe (Walleye Data)      
   write.csv(x = walleyeData, file = '_project/lakeWinnipeg_walleyeData.csv'); # SKILL 28
   
@@ -403,6 +406,18 @@
   
   ## Trophy (> 760 mm)
   trophy <- which(walleyeData$Length >= 760); # SKILL 11 & 58
+  
+  ## Plot subset vectors
+  
+  ### Plot distribution of 'Quality' sized fish with base R
+  boxplot(quality, main = 'Distribution of quality sized walleye',
+          ylab = 'Total Length',
+          col = 'lightgray'); # SKILL 64
+  
+  ### Plot distribution of 'memorable' sized fish with base R
+  boxplot(memorable, main = 'Distribution of memorable sized walleye',
+          ylab = 'Total Length',
+          col = 'lightgray'); # SKILL 64
   
   # Mortality ----
   ## Robson-Chapman estimator (Survival and Instantaneous Mortality (Z))
