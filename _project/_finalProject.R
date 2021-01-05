@@ -53,6 +53,8 @@
   
   favFish <- readline("What is your favorite fish species? "); # SKILL 4
   
+  rep(x=favFish, times=3); # SKILL 48
+  
   ## Output mixed message of users 'favFish'
   
   cat("Cool! I didn't know you liked", favFish, ", they are an interesting"); # SKILL 5
